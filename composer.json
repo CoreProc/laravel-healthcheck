@@ -1,0 +1,25 @@
+{
+  "name": "coreproc/laravel-healthcheck",
+  "type": "library",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Coreproc\\LaravelHealthcheck\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Coreproc\\LaravelHealthcheck\\HealthcheckServiceProvider"
+      ]
+    }
+  },
+  "authors": [
+    {
+      "name": "Chris Bautista",
+      "email": "chris.bautista@coreproc.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {}
+}
