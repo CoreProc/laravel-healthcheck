@@ -2,6 +2,7 @@
 
 namespace Coreproc\LaravelHealthcheck;
 
+use Coreproc\LaravelHealthcheck\Console\Commands\HorizonStatusLog;
 use Coreproc\LaravelHealthcheck\Console\Commands\SchedulerLog;
 use Illuminate\Support\ServiceProvider;
 
@@ -19,6 +20,7 @@ class HealthcheckServiceProvider extends ServiceProvider
         // Register the command if we are using the application via the console
         $this->commands([
             SchedulerLog::class,
+            HorizonStatusLog::class,
         ]);
     }
 }
