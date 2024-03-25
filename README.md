@@ -38,3 +38,14 @@ return [
 
 ];
 ```
+
+### Cron job and Horizon Healthcheck
+
+To check if your cron job and Horizon are running, you can add the following to your `app/Console/Kernel.php` file:
+
+```php
+use Coreproc\LaravelHealthcheck\Jobs\HorizonHealthcheckJob;
+
+$schedule->command('healthcheck:scheduler-log')->everyMinute();
+$schedule->job(new HorizonHealthcheckJob())->everyMinute();
+```
