@@ -2,8 +2,12 @@
 
 namespace Coreproc\LaravelHealthcheck;
 
-use Coreproc\LaravelHealthcheck\Console\Commands\HorizonStatusLog;
-use Coreproc\LaravelHealthcheck\Console\Commands\SchedulerLog;
+use Coreproc\LaravelHealthcheck\Listeners\LogJobFailedListener;
+use Coreproc\LaravelHealthcheck\Listeners\LogJobProcessedListener;
+use Coreproc\LaravelHealthcheck\Listeners\LogJobProcessingListener;
+use Illuminate\Queue\Events\JobFailed;
+use Illuminate\Queue\Events\JobProcessed;
+use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\ServiceProvider;
 
 class HealthcheckServiceProvider extends ServiceProvider
@@ -16,5 +20,26 @@ class HealthcheckServiceProvider extends ServiceProvider
         ], 'healthcheck-config');
 
         $this->loadRoutesFrom(__DIR__ . '/../routes/healthcheck.php');
+
+        $this->listenToQueueEvents();
+    }
+
+    protected function listenToQueueEvents(): void
+    {
+        // Register your event listeners here
+        $this->app['events']->listen(
+            JobProcessing::class,
+            LogJobProcessingListener::class
+        );
+
+        $this->app['events']->listen(
+            JobProcessed::class,
+            LogJobProcessedListener::class
+        );
+
+        $this->app['events']->listen(
+            JobFailed::class,
+            LogJobFailedListener::class
+        );
     }
 }
