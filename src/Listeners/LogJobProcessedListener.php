@@ -12,11 +12,20 @@ class LogJobProcessedListener
      */
     public function handle(JobProcessed $event): void
     {
+        $payload = $event->job->payload();
+
+        $startTime = $payload['pushedAt'];
+        $endTime = microtime(true);
+
+        $processingTime = ($endTime - $startTime) / 1000;
+
         Log::info('Job Processed', [
             'event' => 'job.processed',
-            'job' => $event->job,
+            'job' => $payload['displayName'] ?? 'Unknown Job',
             'connection' => $event->connectionName,
             'queue' => $event->job->getQueue(),
+            'payload' => $payload,
+            'processing_time' => $processingTime,
         ]);
     }
 }

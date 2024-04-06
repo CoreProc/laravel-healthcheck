@@ -12,12 +12,20 @@ class LogJobFailedListener
      */
     public function handle(JobFailed $event): void
     {
+        $payload = $event->job->payload();
+
+        $startTime = $payload['pushedAt'];
+        $endTime = microtime(true);
+
+        $processingTime = ($endTime - $startTime) / 1000;
+
         Log::info('Job Failed', [
             'event' => 'job.failed',
-            'job' => $event->job,
+            'job' => $payload['displayName'] ?? 'Unknown Job',
             'connection' => $event->connectionName,
             'queue' => $event->job->getQueue(),
-            'exception' => $event->exception->getMessage(),
+            'payload' => $event->job->payload(),
+            'processing_time' => $processingTime,
         ]);
     }
 }

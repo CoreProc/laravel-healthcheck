@@ -12,11 +12,14 @@ class LogJobProcessingListener
      */
     public function handle(JobProcessing $event): void
     {
+        $payload = $event->job->payload();
+
         Log::info('Job Processing', [
             'event' => 'job.processing',
-            'job' => $event->job,
+            'job' => $payload['displayName'] ?? 'Unknown Job',
             'connection' => $event->connectionName,
             'queue' => $event->job->getQueue(),
+            'payload' => $payload,
         ]);
     }
 }

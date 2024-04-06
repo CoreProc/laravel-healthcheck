@@ -21,7 +21,9 @@ class HealthcheckServiceProvider extends ServiceProvider
 
         $this->loadRoutesFrom(__DIR__ . '/../routes/healthcheck.php');
 
-        $this->listenToQueueEvents();
+        if (config('healthcheck.jobs.logging', true)) {
+            $this->listenToQueueEvents();
+        }
     }
 
     protected function listenToQueueEvents(): void
