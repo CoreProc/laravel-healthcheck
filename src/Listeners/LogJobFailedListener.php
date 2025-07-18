@@ -14,10 +14,10 @@ class LogJobFailedListener
     {
         $payload = $event->job->payload();
 
-        $startTime = $payload['pushedAt'];
+        $startTime = $payload['pushedAt'] ?? null;
         $endTime = microtime(true);
 
-        $processingTime = ($endTime - $startTime) / 1000;
+        $processingTime = $startTime ? ($endTime - $startTime) / 1000 : null;
 
         Log::info('Job Failed', [
             'event' => 'job.failed',
